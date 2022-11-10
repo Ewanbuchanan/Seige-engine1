@@ -15,6 +15,8 @@ rpm = 0
 
 servo1.start(0)
 duty = 0
+
+
 def rpmsense(channel):
     global rpm, this_time, last_time
     this_time = time.time()
@@ -24,20 +26,18 @@ def rpmsense(channel):
     return ()
 
 
-Io.add_event_detect(sense_pin, Io.RISING, callback= rpmsense, bouncetime=1)
+Io.add_event_detect(sense_pin, Io.RISING, callback=rpmsense, bouncetime=1)
 
-if rpm < 1000:
+if rpm >= 1000:
     servo1.ChangeDutyCycle(12)
 else:
     pass
 
 try:
-    for x in range(0, ):
+    for x in range(0, 100000):
         time.sleep(0.5)
 except:
-    time.sleep(2)
     Io.remove_event_detect(sense_pin)
+    Io.output(servo1, False)
     Io.cleanup()
     servo1.stop()
-
-
