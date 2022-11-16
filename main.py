@@ -12,32 +12,19 @@ Io.setup(servo1, Io.OUT)
 servo1 = Io.PWM(13, 50)
 last_time = time.time()
 this_time = time.time()
-rpm = 0
+rpm = 0.0
 Io.setmode(Io.BOARD)
 servo1.start(0)
 duty = 0
 def rpmsense(channel):
     global rpm, this_time, last_time
     this_time = time.time()
-    rpm = (1 / (this_time - last_time)) * 60
+    rpm = (1.0 / (this_time - last_time)) * 60.0
+    if (1.0 / (this_time - last_time)) * 60.0 >= 400.0:
+        servo1.ChangeDutyCycle(12)
     print('RPM = {:7.1f}'.format(rpm))
     last_time = this_time
     return ()
+Io.add_event_detect(sense_pin, Io.RISING, callback=rpmsense, bouncetime=1)
 
 
-Io.add_event_detect(sense_pin, Io.RISING, callback= rpmsense, bouncetime=1)
-
-if rpm >= 1000:
-    servo1.ChangeDutyCycle(12)
-else:
-    pass
-
-try:
-    for x in range(0, 10000000):
-        time.sleep(0.5)
-except:
-    time.sleep(2)
-    Io.remove_event_detect(sense_pin)
-    Io.output(servo1, False)
-    Io.cleanup()
-    servo1.stop()
