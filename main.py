@@ -26,5 +26,3 @@ def rpmsense(channel):
     last_time = this_time
     return ()
 Io.add_event_detect(sense_pin, Io.RISING, callback=rpmsense, bouncetime=1)
-
-
