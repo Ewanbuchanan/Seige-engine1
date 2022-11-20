@@ -18,6 +18,7 @@ void setup() {
   digitalWrite(2, HIGH);
   attachInterrupt(2, interrupt, LOW);
   myservo.attach(servoPin);
+  pinMode(11, INPUT); //PUSH BUTTON INPUT
 }
 
 void loop() {
@@ -51,6 +52,15 @@ void loop() {
     Serial.println(count); {
       delay(100);
     }
+    //FOR MANUAL ACTIVATION PUSH BUTTON!
+    if(digitalRead(11)==LOW){
+      myservo.write(180);
+      delay(1000);
+      myservo.write(0);
+    }
+    else {
+      myservo.write(0);
+    } //End manual
   }
   //print info
   float end_time = micros();
